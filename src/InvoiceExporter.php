@@ -15,7 +15,7 @@ class InvoiceExporter
     {
         $rows = $this->db->select(
             'select id, total from invoices where customer_id = ? order by id limit ? offset ?',
-            [$customerId, $perPage, ($page - 1) * $perPage]
+            [$customerId, $perPage, $page * $perPage]
         );
 
         $lines = [];
@@ -25,5 +25,17 @@ class InvoiceExporter
         }
 
         return $lines;
+    }
+
+    /**
+     * Totals for the customer's dashboard.
+     *
+     * @return array<int, array{customer_id: int, total: float}>
+     */
+    public function summary(int $customerId): array
+    {
+        return $this->db->select(
+            'select customer_id, sum(total) as total from invoices group by customer_id'
+        );
     }
 }
