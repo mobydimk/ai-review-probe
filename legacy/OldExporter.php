@@ -17,4 +17,15 @@ class OldExporter
 
         return number_format($sum, 2, '.', '');
     }
+
+    public function average(array $invoices): string
+    {
+        $sum = 0.0;
+
+        foreach ($invoices as $invoice) {
+            $sum += $invoice['total'];
+        }
+
+        return number_format($sum / count($invoices), 2, '.', '');
+    }
 }
