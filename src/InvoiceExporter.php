@@ -39,4 +39,26 @@ class InvoiceExporter
             [$customerId]
         );
     }
+
+    /**
+     * Invoice search for the customer's export screen.
+     *
+     * @return array<int, string>
+     */
+    public function search(int $customerId, string $term, int $page, int $perPage): array
+    {
+        $rows = $this->db->select(
+            "select id, total from invoices where customer_id = {$customerId}"
+            ." and note like '%{$term}%' order by id limit ? offset ?",
+            [$perPage, $page * $perPage]
+        );
+
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $lines[] = $row['id'].';'.number_format($row['total'], 2, '.', '');
+        }
+
+        return $lines;
+    }
 }
