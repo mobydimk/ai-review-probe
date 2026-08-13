@@ -63,6 +63,17 @@ class InvoiceExporter
     }
 
     /**
+     * Marks an invoice as paid from the customer's export screen.
+     */
+    public function markPaid(int $customerId, int $invoiceId): void
+    {
+        $this->db->execute(
+            'update invoices set paid = 1, paid_at = now() where id = ?',
+            [$invoiceId]
+        );
+    }
+
+    /**
      * How many invoices the customer has, for the export screen's pager.
      */
     public function count(int $customerId): int
