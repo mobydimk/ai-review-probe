@@ -1,0 +1,29 @@
+<?php
+
+namespace Probe;
+
+class InvoiceExporter
+{
+    public function __construct(private Database $db)
+    {
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function export(int $customerId, int $page, int $perPage): array
+    {
+        $rows = $this->db->select(
+            'select id, total from invoices where customer_id = ? order by id limit ? offset ?',
+            [$customerId, $perPage, ($page - 1) * $perPage]
+        );
+
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $lines[] = $row['id'].';'.number_format($row['total'], 2, '.', '');
+        }
+
+        return $lines;
+    }
+}
