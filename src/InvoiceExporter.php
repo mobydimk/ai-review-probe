@@ -15,7 +15,7 @@ class InvoiceExporter
     {
         $rows = $this->db->select(
             'select id, total from invoices where customer_id = ? order by id limit ? offset ?',
-            [$customerId, $perPage, $page * $perPage]
+            [$customerId, $perPage, ($page - 1) * $perPage]
         );
 
         $lines = [];
