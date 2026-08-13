@@ -61,4 +61,17 @@ class InvoiceExporter
 
         return $lines;
     }
+
+    /**
+     * How many invoices the customer has, for the export screen's pager.
+     */
+    public function count(int $customerId): int
+    {
+        $rows = $this->db->select(
+            'select count(*) as total from invoices where customer_id = ?',
+            [$customerId]
+        );
+
+        return (int) ($rows[0]['total'] ?? 0);
+    }
 }
