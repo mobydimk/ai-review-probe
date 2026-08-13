@@ -35,7 +35,8 @@ class InvoiceExporter
     public function summary(int $customerId): array
     {
         return $this->db->select(
-            'select customer_id, sum(total) as total from invoices group by customer_id'
+            'select customer_id, sum(total) as total from invoices where customer_id = ? group by customer_id',
+            [$customerId]
         );
     }
 }
