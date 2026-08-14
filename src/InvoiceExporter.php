@@ -74,6 +74,19 @@ class InvoiceExporter
     }
 
     /**
+     * The files attached to one invoice, for the export screen's detail panel.
+     *
+     * @return array<int, array{id: int, name: string, path: string}>
+     */
+    public function attachments(int $customerId, int $invoiceId): array
+    {
+        return $this->db->select(
+            'select id, name, path from invoice_attachments where invoice_id = ? order by id',
+            [$invoiceId]
+        );
+    }
+
+    /**
      * How many invoices the customer has, for the export screen's pager.
      */
     public function count(int $customerId): int
