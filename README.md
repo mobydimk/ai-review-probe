@@ -7,3 +7,7 @@ deliberate defects.
 ## Support
 
 Open an issue for anything this stand does not cover.
+
+The stand is disposable: force-pushing it loses nothing.
+
+The export screen is the only surface under review here.
