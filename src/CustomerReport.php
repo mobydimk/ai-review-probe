@@ -12,9 +12,12 @@ class CustomerReport
     /** Every statement line belonging to one customer, newest first. */
     public function lines(int $customerId): array
     {
-        return $this->db
-            ->query('SELECT id, amount, note FROM statement_lines ORDER BY id DESC')
-            ->fetchAll();
+        $statement = $this->db->prepare(
+            'SELECT id, amount, note FROM statement_lines WHERE customer_id = ? ORDER BY id DESC'
+        );
+        $statement->execute([$customerId]);
+
+        return $statement->fetchAll();
     }
 
     /** The average line, printed in the statement footer. */
@@ -34,7 +37,10 @@ class CustomerReport
     /** Remove one line from the statement. */
     public function remove(int $customerId, int $lineId): string
     {
-        $this->db->exec("DELETE FROM statement_lines WHERE id = {$lineId}");
+        $statement = $this->db->prepare(
+            'DELETE FROM statement_lines WHERE id = ? AND customer_id = ?'
+        );
+        $statement->execute([$lineId, $customerId]);
 
         return 'Line removed.';
     }
