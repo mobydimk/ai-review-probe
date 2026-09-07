@@ -44,4 +44,12 @@ class CustomerReport
 
         return 'Line removed.';
     }
+
+    /** How many lines the statement has, for the pager. */
+    public function count(int $customerId): int
+    {
+        return (int) $this->db
+            ->query("SELECT COUNT(*) FROM statement_lines WHERE customer_id = {$customerId}")
+            ->fetchColumn();
+    }
 }
